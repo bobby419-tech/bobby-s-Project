@@ -83,4 +83,4 @@ jobs:
         env:
           TF_LOG: DEBUG   # enable detailed debug logging
         run: terraform apply -auto-approve -input=false
-        timeout-minutes: 15   # stop if stuck more than 15 mins
+        timeout-minutes: 15   
