@@ -1,0 +1,118 @@
+.buttons {
+	border : solid 0px #e6b215;
+	border-radius : 12px;
+	-moz-border-radius : 12px;
+	font-size : 16px;
+	color : #ffffff;
+	padding : 8px 20px;
+	background: linear-gradient(45deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4);
+	background-size: 300% 300%;
+	animation: gradientShift 3s ease infinite;
+	cursor:pointer;
+	box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+	transition: all 0.3s ease;
+}
+
+@keyframes gradientShift {
+	0% { background-position: 0% 50%; }
+	50% { background-position: 100% 50%; }
+	100% { background-position: 0% 50%; }
+}
+
+.buttons:hover {
+	background: linear-gradient(45deg, #FF8E8E, #6EDDD6, #67C4E8, #A8D5C4);
+	transform: translateY(-2px);
+	box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+.buttons:active {
+	position:relative;
+	top:1px;
+	transform: translateY(0);
+}
+
+#newPost {
+	margin: 0 auto;
+	width: 90%;
+}
+
+#charCounter { 
+	float:right;
+	color: #667eea;
+	font-weight: bold;
+	background: linear-gradient(45deg, #FFE066, #FF6B6B);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+}
+
+textarea {
+  width:		100%;
+	height: 	10em;
+	border: 2px solid #ddd;
+	border-radius: 10px;
+	padding: 12px;
+	font-family: verdana, sans-serif;
+	transition: border-color 0.3s ease;
+	background: linear-gradient(45deg, #f8f9ff, #fff8f8);
+}
+
+textarea:focus {
+	border-color: #4ECDC4;
+	outline: none;
+	box-shadow: 0 0 10px rgba(78, 205, 196, 0.3);
+}
+
+body {
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	min-height: 100vh;
+	margin: 0;
+	padding: 20px;
+}
+
+#content {
+  width: 90% ;
+  margin-left: auto ;
+  margin-right: auto;
+	margin-bottom: 10px;
+	font-family:verdana, sans-serif;
+	word-spacing:4pt;
+	font-size:14px;
+	background: rgba(255,255,255,0.95);
+	border-radius: 15px;
+	padding: 25px;
+	box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+	backdrop-filter: blur(10px);
+}
+
+#posts {
+	font-weight:normal;
+	color:#000000;
+	word-spacing:4pt;
+	font-size:10px;
+	text-align:left;
+	font-family:verdana, sans-serif;
+	width: 90%;
+	margin: 0 auto;
+}
+
+#posts th {
+	background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+	color: white;
+	padding: 12px;
+	border-bottom: 1px solid #ddd;
+	border-radius: 8px 8px 0 0;
+	text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+#posts td {
+	padding: 12px;
+	border-color: #666666;
+	background: linear-gradient(90deg, #f8f9ff, #fff8f8, #f8fff8);
+	border-bottom: 1px solid #ddd;
+	transition: background 0.3s ease;
+}
+
+#posts tr:hover td {
+	background: linear-gradient(90deg, #e8f4fd, #fde8f4, #e8fde8);
+}
