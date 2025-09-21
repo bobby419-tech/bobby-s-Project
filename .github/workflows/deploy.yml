@@ -57,11 +57,21 @@ jobs:
 
       - name: Terraform Plan
         working-directory: terraform
-        run: terraform plan -var-file="terraform.tfvars" -input=false
+        run: |
+          terraform plan -input=false \
+            -var="aws_region=us-east-1" \
+            -var="mp3_bucket_name=text2speech-bobby-20250916-unique1234" \
+            -var="db_table_name=bobby_posts" \
+            -var="sns_topic_name=bobby-post-topic"
 
       - name: Terraform Apply
         working-directory: terraform
         env:
           TF_LOG: DEBUG   # enable detailed debug logging
-        run: terraform apply -var-file="terraform.tfvars" -auto-approve -input=false
+        run: |
+          terraform apply -auto-approve -input=false \
+            -var="aws_region=us-east-1" \
+            -var="mp3_bucket_name=text2speech-bobby-20250916-unique1234" \
+            -var="db_table_name=bobby_posts" \
+            -var="sns_topic_name=bobby-post-topic"
         timeout-minutes: 15   
