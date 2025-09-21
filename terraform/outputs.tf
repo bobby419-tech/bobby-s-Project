@@ -9,3 +9,11 @@ output "s3_bucket" {
 output "dynamodb_table" {
   value = aws_dynamodb_table.posts.name
 }
+
+output "cloudfront_url" {
+  value = "https://${aws_cloudfront_distribution.website_distribution.domain_name}"
+}
+
+output "website_bucket" {
+  value = aws_s3_bucket.website_bucket.bucket
+}
