@@ -82,4 +82,8 @@ jobs:
             -var="mp3_bucket_name=text2speech-bobby-20250916-unique1234" \
             -var="db_table_name=bobby_posts" \
             -var="sns_topic_name=bobby-post-topic"
-        timeout-minutes: 15   
+        timeout-minutes: 15
+
+      - name: Upload website to S3
+        run: |
+          aws s3 sync website/ s3://text2speech-bobby-20250916-unique1234-website/ --delete   
