@@ -66,6 +66,11 @@ jobs:
           terraform import -var="aws_region=us-east-1" -var="mp3_bucket_name=text2speech-bobby-20250916-unique1234" -var="db_table_name=bobby_posts" -var="sns_topic_name=bobby-post-topic" aws_lambda_function.new_post bobby-new-post || true
           terraform import -var="aws_region=us-east-1" -var="mp3_bucket_name=text2speech-bobby-20250916-unique1234" -var="db_table_name=bobby_posts" -var="sns_topic_name=bobby-post-topic" aws_lambda_function.convert_to_audio bobby-convert-to-audio || true
           terraform import -var="aws_region=us-east-1" -var="mp3_bucket_name=text2speech-bobby-20250916-unique1234" -var="db_table_name=bobby_posts" -var="sns_topic_name=bobby-post-topic" aws_lambda_function.get_post bobby-get-post || true
+          terraform import -var="aws_region=us-east-1" -var="mp3_bucket_name=text2speech-bobby-20250916-unique1234" -var="db_table_name=bobby_posts" -var="sns_topic_name=bobby-post-topic" aws_lambda_permission.apigw_invoke_new_post bobby-new-post/AllowAPIGatewayInvokeNewPost || true
+          terraform import -var="aws_region=us-east-1" -var="mp3_bucket_name=text2speech-bobby-20250916-unique1234" -var="db_table_name=bobby_posts" -var="sns_topic_name=bobby-post-topic" aws_lambda_permission.apigw_invoke_get_post bobby-get-post/AllowAPIGatewayInvokeGetPost || true
+          terraform import -var="aws_region=us-east-1" -var="mp3_bucket_name=text2speech-bobby-20250916-unique1234" -var="db_table_name=bobby_posts" -var="sns_topic_name=bobby-post-topic" aws_lambda_permission.apigw_invoke_convert_to_audio bobby-convert-to-audio/AllowAPIGatewayInvokeConvertToAudio || true
+          terraform import -var="aws_region=us-east-1" -var="mp3_bucket_name=text2speech-bobby-20250916-unique1234" -var="db_table_name=bobby_posts" -var="sns_topic_name=bobby-post-topic" aws_lambda_permission.allow_sns_invoke bobby-convert-to-audio/AllowExecutionFromSNS || true
+          terraform import -var="aws_region=us-east-1" -var="mp3_bucket_name=text2speech-bobby-20250916-unique1234" -var="db_table_name=bobby_posts" -var="sns_topic_name=bobby-post-topic" aws_s3_bucket.website_bucket text2speech-bobby-20250916-unique1234-website || true
 
       - name: Terraform Apply
         working-directory: terraform
