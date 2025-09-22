@@ -58,14 +58,14 @@ jobs:
       - name: Terraform Import existing resources
         working-directory: terraform
         run: |
-          terraform import aws_dynamodb_table.posts bobby_posts || true
-          terraform import aws_iam_role.lambda_new_post_role bobby_lambda_new_post_role || true
-          terraform import aws_iam_role.lambda_convert_role bobby_lambda_convert_role || true
-          terraform import aws_iam_role.lambda_get_role bobby_lambda_get_role || true
-          terraform import aws_s3_bucket.mp3_bucket text2speech-bobby-20250916-unique1234 || true
-          terraform import aws_lambda_function.new_post bobby-new-post || true
-          terraform import aws_lambda_function.convert_to_audio bobby-convert-to-audio || true
-          terraform import aws_lambda_function.get_post bobby-get-post || true
+          terraform import -var="aws_region=us-east-1" -var="mp3_bucket_name=text2speech-bobby-20250916-unique1234" -var="db_table_name=bobby_posts" -var="sns_topic_name=bobby-post-topic" aws_dynamodb_table.posts bobby_posts || true
+          terraform import -var="aws_region=us-east-1" -var="mp3_bucket_name=text2speech-bobby-20250916-unique1234" -var="db_table_name=bobby_posts" -var="sns_topic_name=bobby-post-topic" aws_iam_role.lambda_new_post_role bobby_lambda_new_post_role || true
+          terraform import -var="aws_region=us-east-1" -var="mp3_bucket_name=text2speech-bobby-20250916-unique1234" -var="db_table_name=bobby_posts" -var="sns_topic_name=bobby-post-topic" aws_iam_role.lambda_convert_role bobby_lambda_convert_role || true
+          terraform import -var="aws_region=us-east-1" -var="mp3_bucket_name=text2speech-bobby-20250916-unique1234" -var="db_table_name=bobby_posts" -var="sns_topic_name=bobby-post-topic" aws_iam_role.lambda_get_role bobby_lambda_get_role || true
+          terraform import -var="aws_region=us-east-1" -var="mp3_bucket_name=text2speech-bobby-20250916-unique1234" -var="db_table_name=bobby_posts" -var="sns_topic_name=bobby-post-topic" aws_s3_bucket.mp3_bucket text2speech-bobby-20250916-unique1234 || true
+          terraform import -var="aws_region=us-east-1" -var="mp3_bucket_name=text2speech-bobby-20250916-unique1234" -var="db_table_name=bobby_posts" -var="sns_topic_name=bobby-post-topic" aws_lambda_function.new_post bobby-new-post || true
+          terraform import -var="aws_region=us-east-1" -var="mp3_bucket_name=text2speech-bobby-20250916-unique1234" -var="db_table_name=bobby_posts" -var="sns_topic_name=bobby-post-topic" aws_lambda_function.convert_to_audio bobby-convert-to-audio || true
+          terraform import -var="aws_region=us-east-1" -var="mp3_bucket_name=text2speech-bobby-20250916-unique1234" -var="db_table_name=bobby_posts" -var="sns_topic_name=bobby-post-topic" aws_lambda_function.get_post bobby-get-post || true
 
       - name: Terraform Apply
         working-directory: terraform
