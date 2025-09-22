@@ -88,7 +88,8 @@ jobs:
         working-directory: terraform
         run: |
           API_URL=$(terraform output -raw api_base_url)
-          sed -i 's|YOUR_API_ID|'"$(echo $API_URL | cut -d'/' -f3 | cut -d'.' -f1)"'|g' ../website/scripts.js
+          echo "API URL: $API_URL"
+          python3 -c "import re; content=open('../website/scripts.js').read(); content=re.sub(r'https://YOUR_API_ID\.execute-api\.us-east-1\.amazonaws\.com/prod', '$API_URL', content); open('../website/scripts.js', 'w').write(content)"
           
       - name: Upload website to S3
         run: |
