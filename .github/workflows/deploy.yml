@@ -88,7 +88,7 @@ jobs:
         working-directory: terraform
         run: |
           API_URL=$(terraform output -raw api_base_url)
-          sed -i "s|https://YOUR_API_ID.execute-api.us-east-1.amazonaws.com/prod|$API_URL|g" ../website/scripts.js
+          sed -i 's|YOUR_API_ID|'"$(echo $API_URL | cut -d'/' -f3 | cut -d'.' -f1)"'|g' ../website/scripts.js
           
       - name: Upload website to S3
         run: |
