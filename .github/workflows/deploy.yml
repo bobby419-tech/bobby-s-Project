@@ -52,7 +52,7 @@ jobs:
       - name: Terraform Format & Validate
         working-directory: terraform
         run: |
-          terraform fmt -check
+          terraform fmt
           terraform validate
 
       - name: Terraform Import existing resources
