@@ -89,13 +89,6 @@ jobs:
             -var="sns_topic_name=bobby-post-topic"
         timeout-minutes: 15
 
-      - name: Get API Gateway URL and update website
-        working-directory: terraform
-        run: |
-          API_URL=$(terraform output -raw api_base_url)
-          echo "API URL: $API_URL"
-          sed -i "s/YOUR_API_ID/ibojzso451/g" ../website/scripts.js
-          
       - name: Build and Upload React App to S3
         run: |
           cd react-app
