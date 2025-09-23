@@ -22,6 +22,30 @@ resource "aws_api_gateway_method" "new_post_post" {
   authorization = "NONE"
 }
 
+resource "aws_api_gateway_method_response" "new_post_post" {
+  rest_api_id = aws_api_gateway_rest_api.api.id
+  resource_id = aws_api_gateway_resource.new_post.id
+  http_method = aws_api_gateway_method.new_post_post.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Origin" = true
+  }
+}
+
+resource "aws_api_gateway_integration_response" "new_post_post" {
+  rest_api_id = aws_api_gateway_rest_api.api.id
+  resource_id = aws_api_gateway_resource.new_post.id
+  http_method = aws_api_gateway_method.new_post_post.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Origin" = "'*'"
+  }
+
+  depends_on = [aws_api_gateway_integration.new_post_integration]
+}
+
 resource "aws_api_gateway_integration" "new_post_integration" {
   rest_api_id             = aws_api_gateway_rest_api.api.id
   resource_id             = aws_api_gateway_resource.new_post.id
@@ -59,6 +83,7 @@ resource "aws_api_gateway_method_response" "new_post_options" {
     "method.response.header.Access-Control-Allow-Origin"  = true
     "method.response.header.Access-Control-Allow-Methods" = true
     "method.response.header.Access-Control-Allow-Headers" = true
+    "method.response.header.Access-Control-Allow-Credentials" = true
   }
 }
 
@@ -72,6 +97,7 @@ resource "aws_api_gateway_integration_response" "new_post_options" {
     "method.response.header.Access-Control-Allow-Origin"  = "'*'"
     "method.response.header.Access-Control-Allow-Methods" = "'OPTIONS,POST'"
     "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+    "method.response.header.Access-Control-Allow-Credentials" = "'false'"
   }
 }
 
@@ -93,6 +119,30 @@ resource "aws_api_gateway_method" "get_post_get" {
   request_parameters = {
     "method.request.querystring.postId" = false
   }
+}
+
+resource "aws_api_gateway_method_response" "get_post_get" {
+  rest_api_id = aws_api_gateway_rest_api.api.id
+  resource_id = aws_api_gateway_resource.get_post.id
+  http_method = aws_api_gateway_method.get_post_get.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Origin" = true
+  }
+}
+
+resource "aws_api_gateway_integration_response" "get_post_get" {
+  rest_api_id = aws_api_gateway_rest_api.api.id
+  resource_id = aws_api_gateway_resource.get_post.id
+  http_method = aws_api_gateway_method.get_post_get.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Origin" = "'*'"
+  }
+
+  depends_on = [aws_api_gateway_integration.get_post_integration]
 }
 
 resource "aws_api_gateway_integration" "get_post_integration" {
@@ -132,6 +182,7 @@ resource "aws_api_gateway_method_response" "get_post_options" {
     "method.response.header.Access-Control-Allow-Origin"  = true
     "method.response.header.Access-Control-Allow-Methods" = true
     "method.response.header.Access-Control-Allow-Headers" = true
+    "method.response.header.Access-Control-Allow-Credentials" = true
   }
 }
 
@@ -145,6 +196,7 @@ resource "aws_api_gateway_integration_response" "get_post_options" {
     "method.response.header.Access-Control-Allow-Origin"  = "'*'"
     "method.response.header.Access-Control-Allow-Methods" = "'OPTIONS,GET'"
     "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+    "method.response.header.Access-Control-Allow-Credentials" = "'false'"
   }
 }
 
