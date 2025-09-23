@@ -40,6 +40,13 @@ function App() {
               if (post.status === 'COMPLETED' && post.url) {
                 setAudioUrl(post.url);
                 setIsGenerating(false);
+              } else if (post.status === 'PROCESSING') {
+                // Show download button immediately when processing starts
+                if (!audioUrl) {
+                  const tempUrl = `https://text2speech-bobby-20250916-unique1234.s3.us-east-1.amazonaws.com/${cleanPostId}.mp3`;
+                  setAudioUrl(tempUrl);
+                }
+                setTimeout(checkAudio, 2000);
               } else {
                 setTimeout(checkAudio, 2000);
               }
@@ -50,7 +57,12 @@ function App() {
           }
         };
         
-        setTimeout(checkAudio, 3000);
+        // Set audio URL immediately with expected S3 path
+        const expectedUrl = `https://text2speech-bobby-20250916-unique1234.s3.us-east-1.amazonaws.com/${cleanPostId}.mp3`;
+        setAudioUrl(expectedUrl);
+        setIsGenerating(false);
+        
+        setTimeout(checkAudio, 1000);
       }
     } catch (error) {
       console.error('Audio generation failed:', error);
@@ -77,6 +89,12 @@ function App() {
           </button>
         </div>
 
+        {text.trim() && !audioUrl && (
+          <div className="audio-section">
+            <p>Enter text above and click Generate Audio to create downloadable MP3</p>
+          </div>
+        )}
+
         {audioUrl && (
           <div className="audio-section">
             <audio controls style={{width: '100%', marginBottom: '15px'}}>
@@ -87,6 +105,8 @@ function App() {
                 href={audioUrl} 
                 download={`audio-${Date.now()}.mp3`}
                 className="download-link"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 ⬇️ Download MP3
               </a>
