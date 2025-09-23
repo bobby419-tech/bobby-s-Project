@@ -22,7 +22,6 @@ function App() {
       return;
     }
 
-    // Browser speech synthesis with speed control
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.rate = playbackSpeed;
     speechSynthesis.speak(utterance);
@@ -50,7 +49,6 @@ function App() {
         const postId = await response.text();
         const cleanPostId = postId.replace(/"/g, '');
         
-        // Poll for audio completion
         const checkAudio = async () => {
           try {
             const checkResponse = await fetch(`${API_BASE_URL}/get-post?postId=${cleanPostId}`);
@@ -62,7 +60,7 @@ function App() {
                 setAudioUrl(post.url);
                 setIsGenerating(false);
               } else {
-                setTimeout(checkAudio, 2000); // Check again in 2 seconds
+                setTimeout(checkAudio, 2000);
               }
             }
           } catch (error) {
@@ -71,15 +69,13 @@ function App() {
           }
         };
         
-        setTimeout(checkAudio, 3000); // Start checking after 3 seconds
+        setTimeout(checkAudio, 3000);
       }
     } catch (error) {
       console.error('Audio generation failed:', error);
       setIsGenerating(false);
     }
   };
-
-
 
   return (
     <div className="app">
@@ -125,7 +121,9 @@ function App() {
           </select>
           
           <button onClick={handleSayIt} className="say-button">Say it!</button>
-          {postId && <span className="post-id">Post ID: {postId}</span>}
+          <button onClick={handleGenerateAudio} className="generate-button" disabled={isGenerating}>
+            {isGenerating ? 'Generating...' : 'Generate Audio'}
+          </button>
         </div>
 
         <div className="form-group">
@@ -139,73 +137,38 @@ function App() {
           <div className="char-counter">Characters: {charCount}</div>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="search">Provide Post ID to retrieve:</label>
-          <input
-            type="text"
-            id="search"
-            value={postId}
-            onChange={(e) => setPostId(e.target.value)}
-            className="search-input"
-          />
-          <button onClick={handleSearch} className="search-button">Search</button>
-        </div>
-
-        <table className="posts-table">
-          <thead>
-            <tr>
-              <th>Post ID</th>
-              <th>Voice</th>
-              <th>Post</th>
-              <th>Status</th>
-              <th>Player / Download</th>
-            </tr>
-          </thead>
-          <tbody>
-            {posts.map((post, index) => (
-              <tr key={index}>
-                <td>{post.id}</td>
-                <td>{post.voice}</td>
-                <td>{post.text}</td>
-                <td>{post.status}</td>
-                <td>
-                  {post.url && (
-                    <>
-                      <audio 
-                        controls 
-                        onLoadedMetadata={(e) => {
-                          e.target.playbackRate = playbackSpeed;
-                        }}
-                        style={{width: '100%', marginBottom: '8px'}}
-                      >
-                        <source src={post.url} type="audio/mpeg" />
-                      </audio>
-                      <br />
-                      <div className="audio-controls">
-                        <button 
-                          onClick={() => {
-                            const audio = document.querySelector(`audio[src="${post.url}"]`);
-                            if (audio) audio.playbackRate = playbackSpeed;
-                          }}
-                          className="speed-button"
-                        >
-                          Set Speed {playbackSpeed}x
-                        </button>
-                        <a 
-                          href={post.url} 
-                          download={`${post.id}.mp3`}
-                          className="download-link"
-                        >
-                          ⬇️ Download MP3
-                        </a>
-                      </div>
-                    </>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        {audioUrl && (
+          <div className="audio-section">
+            <h3>Generated Audio</h3>
+            <audio 
+              controls 
+              onLoadedMetadata={(e) => {
+                e.target.playbackRate = playbackSpeed;
+              }}
+              style={{width: '100%', marginBottom: '15px'}}
+            >
+              <source src={audioUrl} type="audio/mpeg" />
+            </audio>
+            <div className="audio-controls">
+              <button 
+                onClick={() => {
+                  const audio = document.querySelector('audio');
+                  if (audio) audio.playbackRate = playbackSpeed;
+                }}
+                className="speed-button"
+              >
+                Set Speed {playbackSpeed}x
+              </button>
+              <a 
+                href={audioUrl} 
+                download={`audio-${Date.now()}.mp3`}
+                className="download-link"
+              >
+                ⬇️ Download MP3
+              </a>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
