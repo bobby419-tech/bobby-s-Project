@@ -6,10 +6,10 @@ const API_BASE_URL = "/api";
 function App() {
   const [text, setText] = useState('');
   const [voice, setVoice] = useState('Joanna');
-  const [postId, setPostId] = useState('');
-  const [posts, setPosts] = useState([]);
   const [charCount, setCharCount] = useState(0);
   const [playbackSpeed, setPlaybackSpeed] = useState(1.0);
+  const [audioUrl, setAudioUrl] = useState('');
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const handleTextChange = (e) => {
     setText(e.target.value);
@@ -26,6 +26,16 @@ function App() {
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.rate = playbackSpeed;
     speechSynthesis.speak(utterance);
+  };
+
+  const handleGenerateAudio = async () => {
+    if (!text.trim()) {
+      alert('Please enter some text to generate audio.');
+      return;
+    }
+
+    setIsGenerating(true);
+    setAudioUrl('');
 
     try {
       const response = await fetch(`${API_BASE_URL}/new_post`, {
@@ -37,31 +47,39 @@ function App() {
       });
       
       if (response.ok) {
-        const responseText = await response.text();
-        setPostId(responseText.replace(/"/g, ''));
+        const postId = await response.text();
+        const cleanPostId = postId.replace(/"/g, '');
+        
+        // Poll for audio completion
+        const checkAudio = async () => {
+          try {
+            const checkResponse = await fetch(`${API_BASE_URL}/get-post?postId=${cleanPostId}`);
+            if (checkResponse.ok) {
+              const data = await checkResponse.json();
+              const post = Array.isArray(data) ? data[0] : data;
+              
+              if (post.status === 'COMPLETED' && post.url) {
+                setAudioUrl(post.url);
+                setIsGenerating(false);
+              } else {
+                setTimeout(checkAudio, 2000); // Check again in 2 seconds
+              }
+            }
+          } catch (error) {
+            console.error('Error checking audio status:', error);
+            setIsGenerating(false);
+          }
+        };
+        
+        setTimeout(checkAudio, 3000); // Start checking after 3 seconds
       }
     } catch (error) {
-      console.log('API call failed, using local speech only');
-      setPostId(`local-${Date.now()}`);
+      console.error('Audio generation failed:', error);
+      setIsGenerating(false);
     }
   };
 
-  const handleSearch = async () => {
-    if (!postId.trim()) {
-      alert('Please enter a post ID.');
-      return;
-    }
 
-    try {
-      const response = await fetch(`${API_BASE_URL}/get-post?postId=${postId}`);
-      if (response.ok) {
-        const data = await response.json();
-        setPosts(Array.isArray(data) ? data : [data]);
-      }
-    } catch (error) {
-      console.error('Search failed:', error);
-    }
-  };
 
   return (
     <div className="app">

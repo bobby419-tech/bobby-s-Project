@@ -29,7 +29,7 @@
   margin-right: 10px;
 }
 
-.say-button, .search-button {
+.say-button, .generate-button {
   border: none;
   border-radius: 12px;
   font-size: 16px;
@@ -50,7 +50,7 @@
   100% { background-position: 0% 50%; }
 }
 
-.say-button:hover, .search-button:hover {
+.say-button:hover, .generate-button:hover {
   background: linear-gradient(45deg, #FF8E8E, #6EDDD6, #67C4E8, #A8D5C4);
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(0,0,0,0.3);
@@ -157,4 +157,24 @@ label {
 .download-link:hover {
   background: rgba(255, 107, 107, 0.2);
   transform: translateY(-1px);
+}
+
+.audio-section {
+  margin-top: 30px;
+  padding: 20px;
+  background: rgba(255,255,255,0.8);
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.audio-section h3 {
+  margin-top: 0;
+  color: #4ECDC4;
+  text-align: center;
+}
+
+.generate-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
 }
