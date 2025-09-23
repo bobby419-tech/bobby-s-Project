@@ -1,9 +1,20 @@
 var API_BASE_URL = "https://ibojzso451.execute-api.us-east-1.amazonaws.com/prod";
 
 document.getElementById("sayButton").onclick = function () {
+    var text = $('#postText').val();
+    
+    if (text.trim() === "") {
+        alert("Please enter some text to speak.");
+        return;
+    }
+    
+    // Use browser's speech synthesis
+    var utterance = new SpeechSynthesisUtterance(text);
+    speechSynthesis.speak(utterance);
+    
     var inputData = {
         "voice": $('#voiceSelected option:selected').val(),
-        "text": $('#postText').val()
+        "text": text
     };
 
     $.ajax({
