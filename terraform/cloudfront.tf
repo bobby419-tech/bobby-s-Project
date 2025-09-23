@@ -47,6 +47,18 @@ resource "aws_cloudfront_distribution" "website_distribution" {
     }
   }
 
+  origin {
+    domain_name = "${aws_api_gateway_rest_api.api.id}.execute-api.${var.aws_region}.amazonaws.com"
+    origin_id   = "API-Gateway"
+    origin_path = "/prod"
+    custom_origin_config {
+      http_port              = 80
+      https_port             = 443
+      origin_protocol_policy = "https-only"
+      origin_ssl_protocols   = ["TLSv1.2"]
+    }
+  }
+
   enabled             = true
   default_root_object = "index.html"
 
@@ -63,6 +75,27 @@ resource "aws_cloudfront_distribution" "website_distribution" {
         forward = "none"
       }
     }
+  }
+
+  cache_behavior {
+    path_pattern           = "/api/*"
+    allowed_methods        = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
+    cached_methods         = ["GET", "HEAD"]
+    target_origin_id       = "API-Gateway"
+    compress               = true
+    viewer_protocol_policy = "redirect-to-https"
+
+    forwarded_values {
+      query_string = true
+      headers      = ["Authorization", "Content-Type"]
+      cookies {
+        forward = "none"
+      }
+    }
+
+    min_ttl     = 0
+    default_ttl = 0
+    max_ttl     = 0
   }
 
   restrictions {

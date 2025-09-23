@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
 
-const API_BASE_URL = "https://ibojzso451.execute-api.us-east-1.amazonaws.com/prod";
+const API_BASE_URL = "/api";
 
 function App() {
   const [text, setText] = useState('');
