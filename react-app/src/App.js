@@ -9,6 +9,7 @@ function App() {
   const [postId, setPostId] = useState('');
   const [posts, setPosts] = useState([]);
   const [charCount, setCharCount] = useState(0);
+  const [playbackSpeed, setPlaybackSpeed] = useState(1.0);
 
   const handleTextChange = (e) => {
     setText(e.target.value);
@@ -21,8 +22,9 @@ function App() {
       return;
     }
 
-    // Browser speech synthesis
+    // Browser speech synthesis with speed control
     const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = playbackSpeed;
     speechSynthesis.speak(utterance);
 
     try {
@@ -88,6 +90,22 @@ function App() {
             <option value="Gwyneth">Gwyneth [Welsh]</option>
             <option value="Karl">Karl [Icelandic]</option>
           </select>
+          
+          <label htmlFor="speed">Speed:</label>
+          <select 
+            id="speed" 
+            value={playbackSpeed} 
+            onChange={(e) => setPlaybackSpeed(parseFloat(e.target.value))}
+            className="voice-select"
+          >
+            <option value="0.5">0.5x (Slow)</option>
+            <option value="0.75">0.75x</option>
+            <option value="1.0">1.0x (Normal)</option>
+            <option value="1.25">1.25x</option>
+            <option value="1.5">1.5x (Fast)</option>
+            <option value="2.0">2.0x (Very Fast)</option>
+          </select>
+          
           <button onClick={handleSayIt} className="say-button">Say it!</button>
           {postId && <span className="post-id">Post ID: {postId}</span>}
         </div>
@@ -135,11 +153,34 @@ function App() {
                 <td>
                   {post.url && (
                     <>
-                      <audio controls>
+                      <audio 
+                        controls 
+                        onLoadedMetadata={(e) => {
+                          e.target.playbackRate = playbackSpeed;
+                        }}
+                        style={{width: '100%', marginBottom: '8px'}}
+                      >
                         <source src={post.url} type="audio/mpeg" />
                       </audio>
                       <br />
-                      <a href={post.url} download>⬇️ Download MP3</a>
+                      <div className="audio-controls">
+                        <button 
+                          onClick={() => {
+                            const audio = document.querySelector(`audio[src="${post.url}"]`);
+                            if (audio) audio.playbackRate = playbackSpeed;
+                          }}
+                          className="speed-button"
+                        >
+                          Set Speed {playbackSpeed}x
+                        </button>
+                        <a 
+                          href={post.url} 
+                          download={`${post.id}.mp3`}
+                          className="download-link"
+                        >
+                          ⬇️ Download MP3
+                        </a>
+                      </div>
                     </>
                   )}
                 </td>

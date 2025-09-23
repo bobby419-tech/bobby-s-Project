@@ -120,3 +120,41 @@ label {
   margin-right: 10px;
   font-weight: bold;
 }
+
+.audio-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.speed-button {
+  padding: 4px 8px;
+  border: none;
+  border-radius: 6px;
+  background: linear-gradient(45deg, #96CEB4, #45B7D1);
+  color: white;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.speed-button:hover {
+  background: linear-gradient(45deg, #A8D5C4, #67C4E8);
+  transform: translateY(-1px);
+}
+
+.download-link {
+  text-decoration: none;
+  color: #FF6B6B;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: rgba(255, 107, 107, 0.1);
+  transition: all 0.3s ease;
+}
+
+.download-link:hover {
+  background: rgba(255, 107, 107, 0.2);
+  transform: translateY(-1px);
+}
